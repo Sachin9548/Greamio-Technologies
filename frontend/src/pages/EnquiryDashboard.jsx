@@ -5,6 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import AddEnquiryModal from '../components/AddEnquiryModal';
 import EditEnquiryModal from '../components/EditEnquiryModal';
 import ViewEnquiryModal from '../components/ViewEnquiryModal';
+import API_URL from '../config/api';
 
 const EnquiryDashboard = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -23,7 +24,7 @@ const EnquiryDashboard = () => {
   // Fetch enquiries
   const fetchEnquiries = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/enquiries', {
+      const response = await fetch(`${API_URL}/api/enquiries`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,7 +73,7 @@ const EnquiryDashboard = () => {
     if (!confirm('Are you sure you want to delete this enquiry?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/enquiries/${id}`, {
+      const response = await fetch(`${API_URL}/api/enquiries/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import API_URL from '../config/api';
 
 const AddEnquiryModal = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const AddEnquiryModal = ({ onClose, onSuccess }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/enquiries', {
+      const response = await fetch(`${API_URL}/api/enquiries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

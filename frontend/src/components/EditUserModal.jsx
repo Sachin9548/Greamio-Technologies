@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import API_URL from '../config/api';
 
 const EditUserModal = ({ user, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const EditUserModal = ({ user, onClose, onSuccess }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+      const response = await fetch(`${API_URL}/api/users/${user._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

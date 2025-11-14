@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import API_URL from '../config/api';
 
 const EditEnquiryModal = ({ enquiry, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const EditEnquiryModal = ({ enquiry, onClose, onSuccess }) => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/users', {
+        const response = await fetch(`${API_URL}/api/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
@@ -42,7 +43,7 @@ const EditEnquiryModal = ({ enquiry, onClose, onSuccess }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/enquiries/${enquiry._id}`, {
+      const response = await fetch(`${API_URL}/api/enquiries/${enquiry._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

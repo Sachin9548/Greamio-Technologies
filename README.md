@@ -88,7 +88,7 @@ Create docker-compose.yml for local dev with MongoDB.
 Story 5.2 – Deployment
 Setup .env files for dev/prod.
 Deploy backend (Node + MongoDB) on cloud.
-Deploy frontend on Vercel/Cloud.
+Deploy frontend on Vercel.
 Configure proper environment-based API base URLs.
 
 🔹 EPIC 6: Documentation & Testing

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cloudblitz-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      # Use your MongoDB Atlas connection string
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+    restart: unless-stopped
+    networks:
+      - cloudblitz-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cloudblitz-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - cloudblitz-network
+
+networks:
+  cloudblitz-network:
+    driver: bridge
+
+# Note: MongoDB is not included here because you're using MongoDB Atlas (cloud)
+# To use this docker-compose:
+# 1. Create a .env file in the root directory
+# 2. Add your MongoDB Atlas connection string:
+#    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/cloudblitz
+#    JWT_SECRET=your-secret-key
+# 3. Run: docker-compose up -d

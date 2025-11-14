@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import API_URL from '../config/api';
 
 const AddUserModal = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const AddUserModal = ({ onClose, onSuccess }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
+      const response = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
