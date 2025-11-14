@@ -10,5 +10,10 @@ module.exports = {
   testMatch: [
     '**/__tests__/**/*.test.js'
   ],
-  verbose: true
+  verbose: true,
+  testTimeout: 30000, // 30 seconds for database operations
+  forceExit: true,
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true
 };
