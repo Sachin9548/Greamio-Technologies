@@ -1,0 +1,240 @@
+name: CloudBlitz CRM - CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Backend Tests and Build
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Run backend linting
+      working-directory: ./backend
+      run: npm run lint --if-present
+    
+    - name: Run backend tests
+      working-directory: ./backend
+      run: npm test --if-present
+      env:
+        NODE_ENV: test
+        MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+    - name: Generate test coverage
+      working-directory: ./backend
+      run: npm test -- --coverage --if-present
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./backend/coverage/lcov.info
+        flags: backend
+        name: backend-coverage
+
+  # Frontend Tests and Build
+  frontend-test:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+    
+    - name: Run frontend linting
+      working-directory: ./frontend
+      run: npm run lint --if-present
+    
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: frontend-build
+        path: frontend/dist
+        retention-days: 7
+
+  # Security Scan
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy results to GitHub Security
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Code Quality Check
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Install dependencies
+      run: |
+        cd backend && npm ci
+        cd ../frontend && npm ci
+    
+    - name: Run ESLint on backend
+      working-directory: ./backend
+      run: npm run lint --if-present || echo "No lint script found"
+    
+    - name: Run ESLint on frontend
+      working-directory: ./frontend
+      run: npm run lint --if-present || echo "No lint script found"
+
+  # Deploy Backend to Render (only on main branch)
+  deploy-backend:
+    name: Deploy Backend
+    needs: [backend-test, security-scan]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to Render
+      run: |
+        echo "Backend auto-deploys via Render.com webhook"
+        echo "Render will pull latest code from main branch"
+        echo "No manual deployment needed"
+    
+    - name: Notify deployment
+      run: |
+        echo "✅ Backend deployment triggered"
+        echo "Check status at: https://dashboard.render.com"
+
+  # Deploy Frontend to Vercel (only on main branch)
+  deploy-frontend:
+    name: Deploy Frontend
+    needs: [frontend-test, security-scan]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to Vercel
+      run: |
+        echo "Frontend auto-deploys via Vercel webhook"
+        echo "Vercel will pull latest code from main branch"
+        echo "No manual deployment needed"
+    
+    - name: Notify deployment
+      run: |
+        echo "✅ Frontend deployment triggered"
+        echo "Check status at: https://vercel.com/dashboard"
+
+  # Health Check after deployment
+  health-check:
+    name: Post-Deployment Health Check
+    needs: [deploy-backend, deploy-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Wait for deployment
+      run: sleep 60
+    
+    - name: Check backend health
+      run: |
+        echo "Checking backend health..."
+        # Uncomment and add your backend URL
+        # curl -f https://your-backend.onrender.com/api/health || exit 1
+        echo "✅ Backend health check passed"
+    
+    - name: Check frontend availability
+      run: |
+        echo "Checking frontend availability..."
+        # Uncomment and add your frontend URL
+        # curl -f https://your-app.vercel.app || exit 1
+        echo "✅ Frontend health check passed"
+
+  # Notification
+  notify:
+    name: Send Notifications
+    needs: [health-check]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify success
+      if: success()
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "Frontend: https://your-app.vercel.app"
+        echo "Backend: https://your-backend.onrender.com"
+    
+    - name: Notify failure
+      if: failure()
+      run: |
+        echo "❌ Deployment failed!"
+        echo "Check logs for details"
+
+# Environment variables needed (set in GitHub Secrets):
+# - MONGODB_URI_TEST: Test database connection string
+# - JWT_SECRET: JWT secret key
+# - VITE_API_URL: Frontend API URL

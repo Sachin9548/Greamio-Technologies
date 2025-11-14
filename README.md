@@ -94,7 +94,6 @@ Configure proper environment-based API base URLs.
 🔹 EPIC 6: Documentation & Testing
 Story 6.1 – API Documentation
 Auto-generate API documentation.
-Provide Postman collection or API doc site.
 
 Story 6.2 – Testing
 Setup Jest + Supertest for backend.
