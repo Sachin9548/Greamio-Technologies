@@ -1,0 +1,36 @@
+const { z } = require('zod');
+
+const registerSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  role: z.enum(['admin', 'staff', 'user']).optional(),
+});
+
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+});
+
+const validateRegister = (req, res, next) => {
+  try {
+    registerSchema.parse(req.body);
+    next();
+  } catch (error) {
+    res.status(400).json({ error: error.errors[0].message });
+  }
+};
+
+const validateLogin = (req, res, next) => {
+  try {
+    loginSchema.parse(req.body);
+    next();
+  } catch (error) {
+    res.status(400).json({ error: error.errors[0].message });
+  }
+};
+
+module.exports = {
+  validateRegister,
+  validateLogin,
+};

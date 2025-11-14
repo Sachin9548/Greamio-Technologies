@@ -59,6 +59,7 @@ Create Dashboard with tabs for: All, New, In Progress, Closed.
 Add search + filter functionality.
 Display enquiries in a table/list view.
 Add actions: View, Edit, Delete.
+
 Story 3.3 – Enquiry Forms & Modals
 Create Add Enquiry form with validation.
 Create Edit Enquiry modal for status/assignee updates.
