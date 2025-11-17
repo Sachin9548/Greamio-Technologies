@@ -4,7 +4,7 @@
 
 ### Project URLs
 ```
-Frontend URL: https://greamio-technologies-iw5cq2t9i.vercel.app
+Frontend URL: https://greamio-technologies.vercel.app
 Backend URL:  https://greamio-technologies.onrender.com
 GitHub Repo:  https://github.com/Sachin9548/Greamio-Technologies
 ```
@@ -87,7 +87,7 @@ JWT_SECRET:   _____________________________
 ### Project Information
 ```
 Project Name: cloudblitz-frontend
-Project URL:  https://greamio-technologies-iw5cq2t9i.vercel.app
+Project URL:  https://greamio-technologies.vercel.app
 Dashboard:    https://vercel.com/dashboard
 Plan:         Hobby (Free)
 ```

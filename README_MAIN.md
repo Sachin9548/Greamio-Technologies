@@ -1,16 +1,19 @@
 # 🚀 CloudBlitz CRM - Enquiry Management System
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://greamio-technologies-iw5cq2t9i.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://greamio-technologies.vercel.app)
 [![Backend API](https://img.shields.io/badge/API-live-blue)](https://greamio-technologies.onrender.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Backend CI/CD](https://github.com/Sachin9548/Greamio-Technologies/workflows/Backend%20CI/CD%20Pipeline/badge.svg)
+![Frontend CI/CD](https://github.com/Sachin9548/Greamio-Technologies/workflows/Frontend%20CI/CD%20Pipeline/badge.svg)
 
 > A professional, production-ready CRM system for managing customer enquiries with role-based access control.
 
 ## 🌐 Live Application
 
-- **Frontend:** https://greamio-technologies-iw5cq2t9i.vercel.app
+- **Frontend:** https://greamio-technologies.vercel.app
 - **Backend API:** https://greamio-technologies.onrender.com
 - **API Health:** https://greamio-technologies.onrender.com/api/health
+- **GitHub Actions:** https://github.com/Sachin9548/Greamio-Technologies/actions
 
 ---
 
@@ -79,6 +82,7 @@ VITE_API_URL=http://localhost:5000
 | [Deployment Guide](docs/DEPLOYMENT.md) | How to deploy |
 | [System Architecture](docs/ARCHITECTURE.md) | Technical architecture |
 | [Testing Guide](docs/TESTING.md) | Testing instructions |
+| [CI/CD Pipeline](docs/CI-CD.md) | Automated deployment setup |
 
 ---
 

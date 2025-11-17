@@ -22,7 +22,7 @@
 
 ## 🌐 Live Application
 
-- **Frontend:** https://greamio-technologies-iw5cq2t9i.vercel.app
+- **Frontend:** https://greamio-technologies.vercel.app
 - **Backend API:** https://greamio-technologies.onrender.com
 - **API Health:** https://greamio-technologies.onrender.com/api/health
 

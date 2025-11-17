@@ -2,7 +2,7 @@
 
 ## 🌐 Live Application
 
-**Frontend:** https://greamio-technologies-iw5cq2t9i.vercel.app  
+**Frontend:** https://greamio-technologies.vercel.app  
 **Backend API:** https://greamio-technologies.onrender.com
 
 ---
@@ -63,7 +63,7 @@ Password: User@123
 ## 🧪 How to Test
 
 ### 1. Test as Admin
-1. Go to: https://greamio-technologies-iw5cq2t9i.vercel.app
+1. Go to: https://greamio-technologies.vercel.app
 2. Click "Track My Enquiry" (Login)
 3. Login with: `Admin@example.com` / `Admin@123`
 4. ✅ You should see all enquiries
@@ -132,10 +132,10 @@ Password: User@123
 ## 🔗 Quick Links
 
 ### For Testing
-- **Login:** https://greamio-technologies-iw5cq2t9i.vercel.app/login
-- **Register:** https://greamio-technologies-iw5cq2t9i.vercel.app/register
-- **Dashboard:** https://greamio-technologies-iw5cq2t9i.vercel.app/dashboard
-- **User Management:** https://greamio-technologies-iw5cq2t9i.vercel.app/users
+- **Login:** https://greamio-technologies.vercel.app/login
+- **Register:** https://greamio-technologies.vercel.app/register
+- **Dashboard:** https://greamio-technologies.vercel.app/dashboard
+- **User Management:** https://greamio-technologies.vercel.app/users
 
 ### API Testing
 - **Health Check:** https://greamio-technologies.onrender.com/api/health
