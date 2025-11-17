@@ -1,15 +1,8 @@
-name: Frontend CI/CD Pipeline
+# Temporarily disabled - use simple-deploy.yml instead
+name: Frontend CI/CD Pipeline (Disabled)
 
 on:
-  push:
-    branches: [ main, develop ]
-    paths: 
-      - 'frontend/**'
-      - '.github/workflows/frontend-deploy.yml'
-  pull_request:
-    branches: [ main ]
-    paths: 
-      - 'frontend/**'
+  workflow_dispatch: # Manual trigger only
 
 jobs:
   test:

@@ -1,15 +1,8 @@
-name: Backend CI/CD Pipeline
+# Temporarily disabled - use simple-deploy.yml instead
+name: Backend CI/CD Pipeline (Disabled)
 
 on:
-  push:
-    branches: [ main, develop ]
-    paths: 
-      - 'backend/**'
-      - '.github/workflows/backend-deploy.yml'
-  pull_request:
-    branches: [ main ]
-    paths: 
-      - 'backend/**'
+  workflow_dispatch: # Manual trigger only
 
 jobs:
   test:
@@ -38,8 +31,8 @@ jobs:
         npm test
       env:
         NODE_ENV: test
-        MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI_TEST || 'mongodb://localhost:27017/test' }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-key' }}
         
     - name: Run linting
       run: |

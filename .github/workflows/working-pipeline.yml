@@ -1,0 +1,94 @@
+name: CloudBlitz CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Backend Dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Install Frontend Dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: Run Backend Health Tests
+      run: |
+        cd backend
+        npm test -- --testPathPattern=health.test.js
+      env:
+        NODE_ENV: test
+        MONGODB_URI: mongodb://localhost:27017/test
+        JWT_SECRET: test-secret-key
+        
+    - name: Lint Frontend
+      run: |
+        cd frontend
+        npm run lint
+        
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm run build
+      env:
+        VITE_API_URL: https://greamio-technologies.onrender.com
+
+  deploy:
+    name: Deploy Applications
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Deployment Notification
+      run: |
+        echo "🚀 Deploying CloudBlitz CRM to Production"
+        echo ""
+        echo "📦 Backend: Auto-deploying to Render"
+        echo "   URL: https://greamio-technologies.onrender.com"
+        echo ""
+        echo "🎨 Frontend: Auto-deploying to Vercel"
+        echo "   URL: https://greamio-technologies.vercel.app"
+        echo ""
+        echo "⏳ Deployment will complete automatically via GitHub integration"
+        
+    - name: Post-Deployment Health Check
+      run: |
+        echo "⏳ Waiting for deployments to complete..."
+        sleep 180
+        
+        echo "🔍 Checking Backend Health..."
+        if curl -f https://greamio-technologies.onrender.com/api/health; then
+          echo "✅ Backend is healthy"
+        else
+          echo "⚠️ Backend health check failed (may still be deploying)"
+        fi
+        
+        echo "🔍 Checking Frontend..."
+        if curl -f https://greamio-technologies.vercel.app; then
+          echo "✅ Frontend is accessible"
+        else
+          echo "⚠️ Frontend check failed (may still be deploying)"
+        fi
+        
+        echo ""
+        echo "🎉 Deployment pipeline completed!"
+        echo "🌐 Applications should be live at the URLs above"

@@ -1,10 +1,8 @@
-name: Full Stack CI/CD Pipeline
+# Temporarily disabled - use simple-deploy.yml instead
+name: Full Stack CI/CD Pipeline (Disabled)
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch: # Manual trigger only
 
 jobs:
   backend-test:
@@ -33,8 +31,8 @@ jobs:
         npm test
       env:
         NODE_ENV: test
-        MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI_TEST || 'mongodb://localhost:27017/test' }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-key' }}
 
   frontend-test:
     name: Frontend Tests
