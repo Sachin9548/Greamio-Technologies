@@ -13,7 +13,6 @@
 ### Development
 - **[Testing Guide](TESTING.md)** - How to run tests
 - **[Docker Guide](DOCKER.md)** - Docker setup and usage
-- **[CI/CD Pipeline](CI-CD.md)** - GitHub Actions setup
 
 ### Security & Permissions
 - **[Permissions System](PERMISSIONS.md)** - Role-based access control
@@ -42,7 +41,6 @@
 ### For DevOps
 - [Deployment](DEPLOYMENT.md)
 - [Docker Setup](DOCKER.md)
-- [CI/CD Pipeline](CI-CD.md)
 
 ---
 
